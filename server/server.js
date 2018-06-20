@@ -1,19 +1,30 @@
 const path = require('path') //built in to npm
+const http = require('http')
 const express = require('express')
 const logger = require('morgan')
+const socketIO = require('socket.io')
 
 
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000;
-console.log(__dirname + '/../public')
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
 app.use(express.static(publicPath))
 app.use(logger('dev'))
 
+io.on('connection', (socket) => {
+    console.log('New User Connected')
+})
 
-app.listen(port, () => {
+io.on('disconnect', () => {
+    console.log('User was disconnected')
+})
+
+
+server.listen(port, () => {
     console.log(`Server is up on port ${port}`)
 })
 

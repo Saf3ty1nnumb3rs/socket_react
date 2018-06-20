@@ -5,10 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Node Chat</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script>
+    <link rel="stylesheet" type="css" media="screen" href="style.css" />
 </head>
 <body>
     Welcome to the chat app!!!
 </body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io()
+
+    socket.on('connect', () => {
+        console.log('Connected to server.')
+    })
+    socket.on('disconnect', () => {
+        console.log('Disconnected from server')
+    })
+</script>
 </html>
