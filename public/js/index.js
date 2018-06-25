@@ -24,6 +24,8 @@ const socket = io()
             from: 'User',
             text: document.getElementsByName('message')[0].value
         }, function(){
+            document.getElementById('message-form').reset()
 
         })
+        
     })
