@@ -17,6 +17,12 @@ app.use(logger('dev'))
 
 io.on('connection', (socket) => {
     console.log('New User Connected')
+    socket.emit('newMessage', { from: 'Admin', text: 'Welcome to the chat App'})
+    socket.broadcast.emit('newMessage', { 
+        from: 'Admin', 
+        text: 'New User has joined',
+        createdAt: new Date().getTime()
+    })
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message );
@@ -25,6 +31,11 @@ io.on('connection', (socket) => {
             text: message.text,
             createdAt: new Date().getTime()
         } )
+        socket.broadcast.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
     })
 
     socket.on('disconnect', () => {
