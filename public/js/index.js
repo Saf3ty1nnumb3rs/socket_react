@@ -12,17 +12,17 @@ const socket = io()
     //New message call
     socket.on('newMessage', function(message) {
         console.log('New message', message)
-        let li = jQuery('<li></li>')
-        li.text(`${message.from}: ${message.text}`)
+        const li = document.createElement('li')
+        li.innerHTML += `${message.from}: ${message.text}`
 
-        jQuery('#messages').append(li)
+        document.getElementById('messages').appendChild(li)
     })
 
-    jQuery('#message-form').on('submit', function (e) {
+    document.getElementById('message-form').addEventListener('submit', function (e) {
         e.preventDefault()
         socket.emit('createMessage', {
             from: 'User',
-            text: jQuery('[name=message]').val()
+            text: document.getElementsByName('message')[0].value
         }, function(){
 
         })
