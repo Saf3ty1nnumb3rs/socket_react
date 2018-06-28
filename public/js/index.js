@@ -31,29 +31,40 @@ const socket = io()
         document.getElementById('messages').appendChild(li);
     })
 
-
-    document.getElementById('message-form').addEventListener('submit', function (e) {
+//Form Submit Listener
+    const messageTextbox = document.getElementById('message-form');
+    messageTextbox.addEventListener('submit', function (e) {
         e.preventDefault()
         socket.emit('createMessage', {
             from: 'User',
             text: document.getElementsByName('message')[0].value
         }, function(){
-            document.getElementById('message-form').reset()
+            messageTextbox.reset()
 
         })
     })
+
+    // On-click Listener
     const locationButton = document.getElementById('send-location');
     locationButton.addEventListener('click', () => {
         if(!navigator.geolocation) {
             return alert('Geolocation not supported by your browser.')
         }
+        //disable button until process completes
+        locationButton.setAttribute('disabled', 'true');
+        locationButton.innerText = 'Sending...';
         navigator.geolocation.getCurrentPosition( (position) => {
+            //re-enable button once complete
+            locationButton.removeAttribute('disabled');
+            locationButton.innerText = 'Send Location'
             socket.emit('createLocationMessage', {
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude
             })
             console.log(position)
         }, () => {
+            locationButton.removeAttribute('disabled');
+            locationButton.innerText = 'Send Location'
             alert('Unable to fetch location');
         })
     })
