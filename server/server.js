@@ -18,7 +18,8 @@ app.use(logger('dev'))
 
 io.on('connection', (socket) => {
     console.log('New User Connected')
-    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat App'))
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome Pickle Chat'))
+    socket.emit('newMessage', generateMessage('Admin', 'Visit Our German Sister Channel: Gherkin Schnacken'))
     socket.broadcast.emit('newMessage', generateMessage( 'Admin', 'New User has joined'))
 
     socket.on('createMessage', (message, callback) => {
