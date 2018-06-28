@@ -20,4 +20,3 @@ const scrollToBottom = () => {
     }
 }
 
-module.exports = { scrollToBottom }
