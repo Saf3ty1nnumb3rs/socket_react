@@ -4,6 +4,7 @@ const express = require('express')
 const logger = require('morgan')
 const socketIO = require('socket.io')
 const {generateMessage, generateLocationMessage} = require('./utils/message')
+const {isRealString} = require('./utils/validation')
 
 
 const publicPath = path.join(__dirname, '../public')
@@ -18,9 +19,18 @@ app.use(logger('dev'))
 
 io.on('connection', (socket) => {
     console.log('New User Connected')
+
     socket.emit('newMessage', generateMessage('Admin', 'Welcome to Pickle Chat'))
     socket.emit('newMessage', generateMessage('Admin', 'Visit Our German Sister Channel: Gherkin Schnacken'))
+
     socket.broadcast.emit('newMessage', generateMessage( 'Admin', 'New User has joined'))
+
+    socket.on('join', (params, callback) => {
+        if(!isRealString(params.name) || !isRealString(params.room)){
+            callback('Name and room name are required')
+        }
+        callback();
+    })
 
     socket.on('createMessage', (message, callback) => {
         console.log('createMessage', message );
