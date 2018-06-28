@@ -1,4 +1,9 @@
+
+
+
+
 const socket = io()
+
 ///////////////////////// Client Connect
 socket.on('connect', () => {
     console.log('Connected to server.')
@@ -20,6 +25,7 @@ socket.on('newMessage', (message) => {
     });
 
     document.getElementById('messages').innerHTML += html
+    scrollToBottom();
 })
 //////////////////////////////Send Location
 socket.on('newLocationMessage', (message) => {
@@ -31,18 +37,9 @@ socket.on('newLocationMessage', (message) => {
         createdAt: formattedTime
     })
     document.getElementById('messages').innerHTML += html
-   
-    // const li = document.createElement('li');
-    // const a = document.createElement('a');
-    // a.setAttribute('target', '_blank');
-    // a.innerHTML += 'My Current Location'
-
     
-    // let name = document.createTextNode(`${message.from} ${formattedTime} : `);
-    // li.appendChild(name);
-    // a.setAttribute('href', `${message.url}`)
-    // li.appendChild(a)
-    //document.getElementById('messages').appendChild(li);
+    scrollToBottom();
+   
 })
 
 ///////////////////////////Form Submit Listener
