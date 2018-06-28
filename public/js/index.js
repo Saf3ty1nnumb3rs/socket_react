@@ -12,8 +12,9 @@ const socket = io()
     //New message call
     socket.on('newMessage', function(message) {
         console.log('New message', message)
+        const formattedTime = moment(message.createdAt).format('h:mm a');
         const li = document.createElement('li')
-        li.innerHTML += `${message.from}: ${message.text}`
+        li.innerHTML += `${message.from} ${formattedTime}: ${message.text}`
 
         document.getElementById('messages').appendChild(li)
     })
@@ -24,7 +25,8 @@ const socket = io()
         a.setAttribute('target', '_blank');
         a.innerHTML += 'My Current Location'
 
-        let name = document.createTextNode(`${message.from}: `);
+        const formattedTime = moment(message.createdAt).format('h:mm a');
+        let name = document.createTextNode(`${message.from} ${formattedTime} : `);
         li.appendChild(name);
         a.setAttribute('href', `${message.url}`)
         li.appendChild(a)
