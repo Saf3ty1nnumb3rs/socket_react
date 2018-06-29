@@ -53,7 +53,7 @@ socket.on('newLocationMessage', (message) => {
 
 ///////////////////////////Form Submit Listener
     const messageTextbox = document.getElementById('message-form');
-    messageTextbox.addEventListener('submit', function (e) {
+    messageTextbox.addEventListener('submit', (e) => {
         e.preventDefault()
         socket.emit('createMessage', {
             from: 'User',
