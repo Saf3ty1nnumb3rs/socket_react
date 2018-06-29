@@ -23,6 +23,21 @@ socket.on('disconnect', () => {
 
 })
 
+socket.on('updateUserList', (users) => {
+    console.log('Users list', users)
+    const ol = document.createElement('ol')
+    users.forEach((user) => {
+        const line = document.createElement('li')
+        if(line.textContent !== user) {
+           ol.appendChild(line)
+           let userName = document.createTextNode(user)
+           line.appendChild(userName)
+       }
+    
+    })
+    document.getElementById('users').innerHTML = ''
+    document.getElementById('users').appendChild(ol)
+})
 //////////////////////////New message call
 socket.on('newMessage', (message) => {
     const formattedTime = moment(message.createdAt).format('h:mm a');
