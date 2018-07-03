@@ -39,6 +39,11 @@ class Users {
 
       return namesArray;
   }
+
+  uniqueNamesOnly(name, room){
+    const user = this.users.filter(user => (name === user.name && room===user.room))[0];
+    return user?true:false;
+  }
 }
 module.exports = { Users }
 // class Person {

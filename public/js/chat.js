@@ -4,6 +4,11 @@
 
 const socket = io()
 
+var messageCounter = 0;
+var favicon=new Favico({
+    animation:'popFade'
+});
+
 ///////////////////////// Client Connect
 socket.on('connect', () => {
     console.log('Connected to server.')
@@ -13,6 +18,7 @@ socket.on('connect', () => {
             alert(err);
             window.location.href = '/';
         } else {
+            document.title = `${capsFirstLetter(params.room)} | ChatApp`;
             console.log('No error')
         }
     })

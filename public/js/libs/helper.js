@@ -1,6 +1,6 @@
 
 
-const scrollToBottom = () => {
+scrollToBottom = () => {
     //Selectors
     let newMessageHeight = 0;
     let messages = document.getElementById('messages')
@@ -20,6 +20,9 @@ const scrollToBottom = () => {
     }
 }
 
+capsFirstLetter = (string) => {
+    return string.charAt(0).toUppercase() + string.slice(1).toLowerCase();
+}
 
 getQuery = (query) => {
     if(query === undefined){
