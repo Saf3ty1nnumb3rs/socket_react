@@ -6,10 +6,9 @@
   }
 ];
 
-//addUser(id, name, room)
-//removeUser(id)
-//getUser(id)
-//getUserList(room)
+//Modify users to include images or avatars, rooms to be array(or object?) including 'Lobby Chat'
+
+// getUsers, getUser, addUser, updateUserImage, removeUser
 
 class Users {
   constructor() {
