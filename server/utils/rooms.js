@@ -33,6 +33,7 @@ class Rooms {
     }
 
     removeRoom(roomName) {
+        console.log(`Removing ${roomName} from rooms`)
         this.rooms = this.rooms.filter((room) => {
             if(roomName !== 'Lobby Chat') {
                 return room.name !== roomName;
@@ -42,6 +43,7 @@ class Rooms {
         })
     }
     addUserToRoom(userName, roomName) {
+        console.log(`Adding ${userName} to ${roomName}`)
         const room = this.rooms.find(room => room.name === roomName);
 
         if(!room.users.find(user => user === userName)) {
@@ -50,6 +52,7 @@ class Rooms {
     }
 
     removeUserFromRoom(userName, roomName) {
+        console.log(`Removing ${userName} from ${roomName}`)
         const room = this.getRoom(roomName);
 
         if(room) {
@@ -62,6 +65,7 @@ class Rooms {
     }
 
     addMessage(message, roomName) {
+        console.log(`New message in ${roomName}`)
         const room = this.rooms.find(room => room.name === roomName);
 
         if(room.messages.length >= 50) {
