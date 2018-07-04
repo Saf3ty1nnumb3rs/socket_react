@@ -1,13 +1,12 @@
 const path = require("path"); //built in to npm
 const express = require("express");
 const logger = require("morgan");
+const multer = require("multer");
 
 const { generateMessage, generateLocationMessage } = require("./utils/message");
 const { isRealString } = require("./utils/validation");
 const { Users } = require("./utils/users")
-
-const publicPath = path.join(__dirname, "../public");
-const PORT = process.env.PORT || 3000;
+const { Rooms } = require("./utils/rooms")
 
 const app = express();
 const http = require("http").Server(app);
@@ -15,7 +14,11 @@ const io = require('socket.io')(http, {
   pingInterval: 5000,
   pingTimeout: 10000
 });
+const publicPath = path.join(__dirname, "../public");
+const PORT = process.env.PORT || 3000;
+
 const users = new Users();
+const rooms = new Rooms();
 
 app.use(express.static(publicPath));
 app.use(logger("dev"));

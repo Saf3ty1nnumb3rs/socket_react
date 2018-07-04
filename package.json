@@ -1,8 +1,8 @@
 {
   "name": "node-chat-app",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "React, Node, and Socket.io",
+  "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
@@ -13,7 +13,7 @@
     "node": "10.2.1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Josh Sample",
   "license": "ISC",
   "dependencies": {
     "concurrently": "^3.6.0",
