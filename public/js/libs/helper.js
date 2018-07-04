@@ -1,4 +1,16 @@
 
+messageCountInTab = () =>{
+    if(!document.hasFocus()){
+      favicon.badge(++messageCounter);
+    }
+  };
+  
+clearTabCount = () => {
+    messageCounter=0;
+    favicon.badge(messageCounter);
+  };
+
+
 
 scrollToBottom = () => {
     //Selectors
@@ -21,7 +33,7 @@ scrollToBottom = () => {
 }
 
 capsFirstLetter = (string) => {
-    return string.charAt(0).toUppercase() + string.slice(1).toLowerCase();
+    return string.charAt(0).toUpperCase() + string.substr(1);
 }
 
 getQuery = (query) => {

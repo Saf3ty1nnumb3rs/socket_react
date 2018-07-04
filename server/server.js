@@ -1,19 +1,20 @@
 const path = require("path"); //built in to npm
-const http = require("http");
 const express = require("express");
 const logger = require("morgan");
-const socketIO = require("socket.io");
 
 const { generateMessage, generateLocationMessage } = require("./utils/message");
 const { isRealString } = require("./utils/validation");
 const { Users } = require("./utils/users")
 
 const publicPath = path.join(__dirname, "../public");
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
+const http = require("http").Server(app);
+const io = require('socket.io')(http, {
+  pingInterval: 5000,
+  pingTimeout: 10000
+});
 const users = new Users();
 
 app.use(express.static(publicPath));
@@ -22,6 +23,7 @@ app.use(logger("dev"));
 app.get('/rooms', (req,res) => {
   let availableRooms = [];
   const rooms = io.sockets.adapter.rooms;
+  console.log(rooms)
   if(rooms) {
     for( var room in rooms){
       if(!rooms[room].sockets.hasOwnProperty(room)){
@@ -109,8 +111,8 @@ io.on("connection", socket => {
   });
 });
 
-server.listen(port, () => {
-  console.log(`Server is up on port ${port}`);
+http.listen(PORT, () => {
+  console.log(`Server is up on port ${PORT}`);
 });
 
 module.exports = app;

@@ -56,6 +56,7 @@ socket.on('newMessage', (message) => {
 
     document.getElementById('messages').innerHTML += html
     scrollToBottom();
+    messageCountInTab();
 })
 //////////////////////////////Send Location
 socket.on('newLocationMessage', (message) => {
@@ -69,7 +70,7 @@ socket.on('newLocationMessage', (message) => {
     document.getElementById('messages').innerHTML += html
     
     scrollToBottom();
-   
+    messageCountInTab();
 })
 
 ///////////////////////////Form Submit Listener
@@ -108,3 +109,14 @@ locationButton.addEventListener('click', () => {
         alert('Unable to fetch location');
     })
 })
+
+window.onload = () => {
+
+    window.onfocus = () => {
+        if(messageCounter> 0) {
+            clearTabCount();
+        }
+    }
+
+}
+
