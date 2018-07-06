@@ -7,7 +7,7 @@
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
-    "dev": "concurrently\"nodemon server/server.js\"\"cd client && npm start\"",
+    "dev": "concurrently \"nodemon server/server.js\" \"cd client && npm start\"",
     "postinstall": "cd client && npm i && npm run build"
   },
   "engines": {
