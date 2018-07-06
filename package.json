@@ -1,5 +1,5 @@
 {
-  "name": "node-chat-app",
+  "name": "node-react",
   "version": "1.0.0",
   "description": "React, Node, and Socket.io",
   "main": "server/server.js",
@@ -7,7 +7,7 @@
     "start": "node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
-    "dev": "concurrently \"nodemon server/server.js\" \"cd client && npm start\"",
+    "dev": "concurrently \"node server/server.js\" \"cd client && npm start\"",
     "postinstall": "cd client && npm i && npm run build"
   },
   "engines": {

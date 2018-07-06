@@ -14,13 +14,13 @@ const io = require('socket.io')(http, {
   pingInterval: 5000,
   pingTimeout: 10000
 });
-const publicPath = path.join(__dirname, "../client/build");
-const PORT = process.env.PORT || 3000;
+const publicPath = `${__dirname}/client/build`
+const PORT = process.env.PORT || 3001;
 
 const users = new Users();
 const rooms = new Rooms();
 
-app.use(express.static(publicPath));
+app.use(express.static(path.join(__dirname, "/client/build")));
 app.use(logger("dev"));
 
 app.get('/rooms', (req,res) => {
@@ -114,8 +114,8 @@ io.on("connection", socket => {
   });
 });
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+app.get('/*', (req, res) => {
+  res.sendFile(`${__dirname}/client/build/index.html`);
 });
 
 http.listen(PORT, () => {
