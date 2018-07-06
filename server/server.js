@@ -14,7 +14,7 @@ const io = require('socket.io')(http, {
   pingInterval: 5000,
   pingTimeout: 10000
 });
-const publicPath = path.join(__dirname, "../public");
+const publicPath = path.join(__dirname, "../client/build");
 const PORT = process.env.PORT || 3000;
 
 const users = new Users();
@@ -112,6 +112,10 @@ io.on("connection", socket => {
         io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room`))
     }
   });
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 
 http.listen(PORT, () => {
