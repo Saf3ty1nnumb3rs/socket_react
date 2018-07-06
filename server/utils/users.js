@@ -1,59 +1,58 @@
-[
-  {
-    id: "1",
-    name: "Josh",
-    room: "Pickles"
-  }
-];
-
-//Modify users to include images or avatars, rooms to be array(or object?) including 'Lobby Chat'
-
-// getUsers, getUser, addUser, updateUserImage, removeUser
 
 class Users {
   constructor() {
-      this.users = [];
-  }
-  addUser (id, name, room) {
-      let user = {id, name, room};
-      this.users.push(user);
-      return user;
-  }
-  removeUser (id) {
-      //return user that was removed
-      const user = this.getUser(id)
-
-      if(user) {
-          this.users = this.users.filter((user) => user.id !== id)
-            //filter sets array equal to the objects not having the argument id
-          return user
-      }
-  }
-  getUser (id) {
-    return this.users.filter((user) => user.id === id)[0]
-  }
-  getUserList (room) {
-      let users = this.users.filter((user) => user.room === room)
-      let namesArray = users.map((user) => user.name)
-
-      return namesArray;
+    this.users = [];
   }
 
-  uniqueNamesOnly(name, room){
-    const user = this.users.filter(user => (name === user.name && room===user.room))[0];
-    return user?true:false;
+  getUser(id) {
+    console.log('Get User', id)
+    return this.users.filter(user => user.id === id)[0];
+  }
+
+  getUsers() {
+    console.log('Getting users', this.users)
+    return this.users;
+  }
+
+  addUser(id, name) {
+    console.log(`Adding ${name} to users`)
+    if (this.users.find(user => user.name === name)) {
+      return "Username taken";
+    }
+    this.users.push({
+      id,
+      name,
+      image: "/img/userPics/default_avatar.png",
+      rooms: ["Local Chat"]
+    });
+  }
+
+  updatePic(id, pic) {
+    console.log(`Updating ${pic}`)
+    this.users.find(user => user.id === id).pic = `/img/userPics/${pic}`;
+  }
+
+  removeUser(id) {
+    console.log(`Removing ${id}`)
+    //return user that was removed
+    const user = this.getUser(id);
+
+    if (user) {
+      this.users = this.users.filter(user => user.id !== id);
+      //filter sets array equal to the objects not having the argument id
+    }
+  }
+
+  addRoom(id, roomName) {
+    console.log(`Adding room: ${roomName}`)
+    this.users.find(user => user.id === id).rooms.push(roomName);
+  }
+
+  removeRoom(id, roomName) {
+    console.log(`Removing room: ${roomName}`)
+    const user = this.getUser(id);
+    user.rooms = user.rooms.filter(room => room !== roomName)
   }
 }
-module.exports = { Users }
-// class Person {
-//   constructor(name, age) {
-//     this.name = name;
-//     this.age = age;
-//   }
-//   getUserDescription() {
-//     return `${this.name} is ${this.age} year(s) old.`;
-//   }
-// }
-// var me = new Person("Rick", 58);
-// const description = me.getUserDescription();
-// console.log(description);
+
+module.exports = { Users };

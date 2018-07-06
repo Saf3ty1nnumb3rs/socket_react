@@ -1,10 +1,10 @@
 const path = require("path"); //built in to npm
 const express = require("express");
+const moment = require('moment');
 const logger = require("morgan");
 const multer = require("multer");
 
-const { generateMessage, generateLocationMessage } = require("./utils/message");
-const { isRealString } = require("./utils/validation");
+const { generateLocationMessage } = require("./utils/message");
 const { Users } = require("./utils/users")
 const { Rooms } = require("./utils/rooms")
 
@@ -40,78 +40,107 @@ app.get('/rooms', (req,res) => {
 io.on("connection", socket => {
   console.log("New User Connected");
 
-  socket.on("join", (params, callback) => {
-    if (!isRealString(params.name) || !isRealString(params.room)) {
-      return callback("Name and room name are required");
+  socket.on('joinUser', (userName, callback) => {
+    
+      const err = users.addUser(socket.id, userName);   
+      
+      if(err) {
+        return callback(err)
+      }
+      rooms.addUser(userName, 'Local Chat');
+
+      socket.join('Local Chat');
+      socket.room = 'Local Chat';
+      
+      io.emit('updateUsers', users.getUsers());
+      socket.emit('updateUser', users.getUser(socket.id));
+      io.emit('updateRooms', rooms.getRooms());
+      socket.emit('updateRoom', roms.getRoom(socket.room));
+    
+  })
+  socket.on('joinRoom', ({ roomName, password = null }, callback) => {
+    const room = rooms.getRoom(roomName);
+
+    if(room && room.password !== password) {
+      callback('Wrong password');
+    }else{
+      users.addRoom(socket.id, roomName);
+      rooms.addRoom(roomName, password);
+      rooms.addUser(users.getUser(socket.id).name, roomName);
+
+      socket.join(roomName);
+      socket.room = roomName;
+
+      io.emit('updateUsers', users.getUsers());
+      socket.emit('updateUser', users.getUser(socket.id));
+      io.emit('updateRooms', rooms.getRooms());
+      socket.emit('updateRoom', rooms.getRoom(socket.room));
+
+      callback(null)
+    } 
+  })
+  
+  socket.on('leaveRoom', (roomName) => {
+    rooms.removeUser(users.getUser(socket.id).name, roomName);
+    users.removeRoom(socket.id, roomName);
+
+    socket.leave(roomName);
+    const user = users.getUser(socket.id);
+    socket.room = user.rooms[user.rooms.length - 1];
+
+    socket.emit('updateRoom', rooms.getRoom(socket.room));
+    io.emit('updateUsers', users.getUsers());
+    socket.emit('updateUser', users.getUser(socket.id));
+    io.emit('updateRooms', rooms.getRooms());
+  })
+
+  socket.on('clientMessage', (data) => {
+    const room = rooms.getRoom(data.roomName);
+    const message = {
+      sender: users.getUser(socket.id),
+      text: data.text,
+      time: moment().format('HH:mm'),
+    };
+    if (room.messages.length && message.sender === room.messages[room.messages.length - 1].sender) {
+      message.consecutive = true;
     }
-    if(users.uniqueNamesOnly(params.name, params.room)){
-      return callback('Name is taken.')
-    }
 
-    socket.join(params.room);
-    users.removeUser(socket.id)
-    users.addUser(socket.id, params.name, params.room)
+    rooms.addMessage(message, data.roomName);
 
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room))
+    io.emit('updateRooms', rooms.getRooms());
+  })
 
-
-//WELCOME MESSAGE
-    socket.emit(
-      "newMessage",
-      generateMessage("Admin", `Welcome to ${params.room} Chat`)
-    );
-
-//VISIT REC
-    socket.emit(
-      "newMessage",
-      generateMessage(
-        "Admin",
-        "Visit Our Other favorite Channel: Gherkin Schnacken"
-      )
-    );
-
-//ENTRANCE ANNOUNCEMENT
-    socket.broadcast.to(params.room).emit(
-      "newMessage",
-      generateMessage("Admin", `${params.name} has joined`)
-    );
-    callback();
+  socket.on('getUserPic', () => {
+    io.emit('updateUsers', users.getUsers());
+    socket.emit('updateUser', users.getUser(socket.id));
+    io.emit('updateRooms', rooms.getRooms());
   });
 
-//CREATE MESSAGE
-  socket.on("createMessage", (message, callback) => {
+  socket.on('disconnect', () => {
     const user = users.getUser(socket.id);
 
-    if(user && isRealString(message.text)) {
-        io.to(user.room).emit('newMessage' , generateMessage(user.name, message.text));
+    if (user) {
+      user.rooms.forEach((room) => {
+        rooms.removeUser(users.getUser(socket.id).name, room);
+      });
     }
-   
-    callback();
+    users.removeUser(socket.id);
+
+    socket.leave(socket.room);
+
+    io.emit('updateRooms', rooms.getRooms());
+    io.emit('updateUsers', users.getUsers());
   });
 
-//CREATE LOCATION MESSAGE
-  socket.on("createLocationMessage", coords => {
-    const user = users.getUser(socket.id)
+  // socket.on("createLocationMessage", coords => {
+  //   const user = users.getUser(socket.id)
 
-    if(user){
-    io.to(user.room).emit(
-      "newLocationMessage",
-      generateLocationMessage(user.name, coords.latitude, coords.longitude)
-    );
-  }
-  });
-
-//DISCONNECT from socket
-  socket.on("disconnect", () => {
-    console.log("User was disconnected");
-
-    const user = users.removeUser(socket.id)
-
-    if(user) {
-        io.to(user.room).emit('updateUserList', users.getUserList(user.room))
-        io.to(user.room).emit('newMessage', generateMessage('Admin', `${user.name} has left the room`))
-    }
-  });
+  //   if(user){
+  //   io.to(user.room).emit(
+  //     "newLocationMessage",
+  //     generateLocationMessage(user.name, coords.latitude, coords.longitude)
+  //   );
+  // }
 });
 
 app.get('/*', (req, res) => {
