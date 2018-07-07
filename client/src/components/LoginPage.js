@@ -4,7 +4,7 @@ import { socketEmit } from '../helpers/socketEvents';
 class LoginPage extends Component {
 
     state = {
-        error = null
+        error: null
     };
 
     loginUser = (event) => {

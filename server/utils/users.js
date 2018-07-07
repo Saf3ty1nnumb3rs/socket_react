@@ -22,7 +22,7 @@ class Users {
     this.users.push({
       id,
       name,
-      image: "/img/userPics/default_avatar.png",
+      userPic: "/img/userPics/default_avatar.png",
       rooms: ["Local Chat"]
     });
   }

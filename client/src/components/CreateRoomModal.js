@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class SidebarRight extends Component {
+class CreateRoomModal extends Component {
     render() {
         return (
             <div>
@@ -10,4 +10,4 @@ class SidebarRight extends Component {
     }
 }
 
-export default SidebarRight;
+export default CreateRoomModal;
