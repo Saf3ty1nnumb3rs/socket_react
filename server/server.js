@@ -99,7 +99,7 @@ io.on("connection", socket => {
     const message = {
       sender: users.getUser(socket.id),
       text: data.text,
-      time: moment().format('HH:mm'),
+      time: moment().format('hh:mm a'),
     };
     if (room.messages.length && message.sender === room.messages[room.messages.length - 1].sender) {
       message.consecutive = true;

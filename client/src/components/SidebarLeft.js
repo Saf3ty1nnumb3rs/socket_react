@@ -48,7 +48,7 @@ class SidebarLeft extends Component {
       };
 
       closeSidebar = () => {
-        sidebarClose('left');
+        sidebarClose();
       };
 
     render() {
