@@ -23,19 +23,51 @@ const rooms = new Rooms();
 app.use(express.static(path.join(__dirname, "/client/build")));
 app.use(logger("dev"));
 
-app.get('/rooms', (req,res) => {
-  let availableRooms = [];
-  const rooms = io.sockets.adapter.rooms;
-  console.log(rooms)
-  if(rooms) {
-    for( var room in rooms){
-      if(!rooms[room].sockets.hasOwnProperty(room)){
-        availableRooms.push(room)
-      }
-    }
+// app.get('/rooms', (req,res) => {
+//   let availableRooms = [];
+//   const rooms = io.sockets.adapter.rooms;
+//   console.log(rooms)
+//   if(rooms) {
+//     for( var room in rooms){
+//       if(!rooms[room].sockets.hasOwnProperty(room)){
+//         availableRooms.push(room)
+//       }
+//     }
+//   }
+//   res.send(availableRooms)
+// })
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './client/public/img/userPics');
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + file.originalname);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/gif') {
+    cb(null, true);
+  } else {
+    cb(new Error('Unsupported file format'), false);
   }
-  res.send(availableRooms)
-})
+};
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5,
+  },
+  fileFilter,
+});
+
+app.post('/api/userPic', upload.single('userPic'), (req, res) => {
+  users.updateAvatar(req.body.id, req.file.filename);
+
+  res.send(req.file);
+});
+
 
 io.on("connection", socket => {
   console.log("New User Connected");
