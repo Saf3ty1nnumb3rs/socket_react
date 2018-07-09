@@ -2,7 +2,7 @@ class Rooms {
     constructor () {
         this.rooms = [
             {
-                nmae: 'Lobby Chat',
+                name: 'Local Chat',
                 password: null,
                 users: [],
                 messages: []
@@ -21,7 +21,7 @@ class Rooms {
     }
 
     addRoom(roomName, password) {
-        console.log('Room name form addRoom', roomName)
+        console.log('Room name from addRoom', roomName)
         if(!this.rooms.find(room => room.name === roomName)) {
             this.rooms.push({
                 name: roomName,
@@ -35,7 +35,7 @@ class Rooms {
     removeRoom(roomName) {
         console.log(`Removing ${roomName} from rooms`)
         this.rooms = this.rooms.filter((room) => {
-            if(roomName !== 'Lobby Chat') {
+            if(roomName !== 'Local Chat') {
                 return room.name !== roomName;
             }
 

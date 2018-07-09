@@ -3,39 +3,22 @@ const express = require("express");
 const moment = require('moment');
 const logger = require("morgan");
 const multer = require("multer");
-
-const { generateLocationMessage } = require("./utils/message");
+const bodyParser = require('body-parser')
 const { Users } = require("./utils/users")
 const { Rooms } = require("./utils/rooms")
 
 const app = express();
 const http = require("http").Server(app);
-const io = require('socket.io')(http, {
-  pingInterval: 5000,
-  pingTimeout: 10000
-});
-const publicPath = `${__dirname}/client/build`
+const io = require('socket.io')(http);
+const publicPath = path.join(__dirname, 'client', 'public');
 const PORT = process.env.PORT || 3001;
 
 const users = new Users();
 const rooms = new Rooms();
 
-app.use(express.static(path.join(__dirname, "/client/build")));
+app.use(express.static(publicPath));
 app.use(logger("dev"));
-
-// app.get('/rooms', (req,res) => {
-//   let availableRooms = [];
-//   const rooms = io.sockets.adapter.rooms;
-//   console.log(rooms)
-//   if(rooms) {
-//     for( var room in rooms){
-//       if(!rooms[room].sockets.hasOwnProperty(room)){
-//         availableRooms.push(room)
-//       }
-//     }
-//   }
-//   res.send(availableRooms)
-// })
+app.use(bodyParser.json())
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -63,14 +46,14 @@ const upload = multer({
 });
 
 app.post('/api/userPic', upload.single('userPic'), (req, res) => {
-  users.updateAvatar(req.body.id, req.file.filename);
+  users.updatePic(req.body.id, req.file.filename);
 
   res.send(req.file);
 });
 
 
 io.on("connection", socket => {
-  console.log("New User Connected");
+  console.log("Socket Connected");
 
   socket.on('joinUser', (userName, callback) => {
     
@@ -79,7 +62,7 @@ io.on("connection", socket => {
       if(err) {
         return callback(err)
       }
-      rooms.addUser(userName, 'Local Chat');
+      rooms.addUserToRoom(userName, 'Local Chat');
 
       socket.join('Local Chat');
       socket.room = 'Local Chat';
@@ -87,7 +70,7 @@ io.on("connection", socket => {
       io.emit('updateUsers', users.getUsers());
       socket.emit('updateUser', users.getUser(socket.id));
       io.emit('updateRooms', rooms.getRooms());
-      socket.emit('updateRoom', roms.getRoom(socket.room));
+      socket.emit('updateRoom', rooms.getRoom(socket.room));
     
   })
   socket.on('joinRoom', ({ roomName, password = null }, callback) => {
@@ -98,7 +81,7 @@ io.on("connection", socket => {
     }else{
       users.addRoom(socket.id, roomName);
       rooms.addRoom(roomName, password);
-      rooms.addUser(users.getUser(socket.id).name, roomName);
+      rooms.addUserToRoom(users.getUser(socket.id).name, roomName);
 
       socket.join(roomName);
       socket.room = roomName;
@@ -113,7 +96,7 @@ io.on("connection", socket => {
   })
   
   socket.on('leaveRoom', (roomName) => {
-    rooms.removeUser(users.getUser(socket.id).name, roomName);
+    rooms.removeUserFromRoom(users.getUser(socket.id).name, roomName);
     users.removeRoom(socket.id, roomName);
 
     socket.leave(roomName);
@@ -153,7 +136,7 @@ io.on("connection", socket => {
 
     if (user) {
       user.rooms.forEach((room) => {
-        rooms.removeUser(users.getUser(socket.id).name, room);
+        rooms.removeUserFromRoom(users.getUser(socket.id).name, room);
       });
     }
     users.removeUser(socket.id);
@@ -175,12 +158,10 @@ io.on("connection", socket => {
   // }
 });
 
-app.get('/*', (req, res) => {
-  res.sendFile(`${__dirname}/client/build/index.html`);
+app.get('*', (req, res) => {
+  res.sendFile(`${__dirname}/client/public/index.html`);
 });
-
 http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
 
-module.exports = app;

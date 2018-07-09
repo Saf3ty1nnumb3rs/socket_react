@@ -1,0 +1,68 @@
+.sidebar-left {
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 100vh;
+    -webkit-transition: all .5s ease;
+      -moz-transition: all .5s ease;
+    transition: all .5s ease;
+  
+    .profile {
+      display: flex;
+      justify-content: space-between;
+      height: 90px;
+  
+      .left {
+        display: flex;
+  
+        img {
+          min-width: 70px;
+          max-width: 70px;
+          min-height: 70px;
+          max-height: 70px;
+          margin: 10px;
+          border-radius: 50%;
+        }
+  
+        p {
+          margin: 15px;
+          font: $font-l-bold;
+        }
+  
+        .edit {
+          margin-left: 15px;
+        }
+      }
+  
+      .close {
+        display: none;
+  
+        @media (max-width: $medium) {
+          display: inline;
+        }
+  
+        button {
+          margin: 10px 5px;
+        }
+      }
+    }
+  
+    .public-chats {
+      .panel {
+        @include panel;
+      }
+  
+      .public-chats-list {
+        @include list;
+      }
+    }
+  
+    .users {
+      .panel {
+        @include panel;
+      }
+  
+      .users-list {
+        @include list;
+      }
+    }
+  }

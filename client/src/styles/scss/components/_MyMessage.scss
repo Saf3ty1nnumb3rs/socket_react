@@ -1,0 +1,64 @@
+.my-message {
+    display: flex;
+    max-width: 500px;
+    height: auto;
+    margin-left: auto;
+    justify-content: flex-end;
+  
+    @media (max-width: $medium) {
+      max-width: 300px;
+    }
+  
+    .message-content {
+      min-width: 100px;
+      height: auto;
+      margin: 5px;
+      padding: 5px 10px;
+      text-align: right;
+      border-radius: 6px;
+      box-shadow: 1px 1px 3px #808080ab;
+      overflow: hidden;
+  
+      .sender {
+        margin: 0 0 10px 0;
+        font: $font-xs-bold;
+      }
+  
+      .text {
+        margin: 0;
+        font: $font-m;
+      }
+  
+      .time {
+        float: left;
+        margin: 5px 0 0 0;
+        font: $font-xs-italic;
+      }
+    }
+  
+    .message-content-consecutive {
+      @extend .message-content;
+      margin-right: 65px;
+  
+      @media (max-width: $medium) {
+        margin-right: 55px;
+      }
+    }
+  
+    img {
+      min-width: 50px;
+      max-width: 50px;
+      min-height: 50px;
+      max-height: 50px;
+      margin: 5px;
+      border-radius: 50%;
+      box-shadow: 1px 1px 3px #808080ab;
+  
+      @media (max-width: $medium) {
+        min-width: 40px;
+        max-width: 40px;
+        min-height: 40px;
+        max-height: 40px;
+      }
+    }
+  }

@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import PropTypes from "prop-types";
 import { socketEmit } from "../helpers/socketEvents";
 
+
 class PasswordModal extends Component {
   state = {
     error: null

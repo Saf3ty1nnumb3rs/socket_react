@@ -1,0 +1,95 @@
+.chat-app {
+    display: flex;
+    min-height: 100vh;
+  
+    .chat-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100%;
+      height: 100vh;
+      max-height: 100vh;
+      background-image: url('/img/sun.png');
+      -webkit-transition: all .5s ease;
+      -moz-transition: all .5s ease;
+      transition: all .5s ease;
+  
+      @media (max-width: $medium) {
+        width: 100%;
+      }
+  
+      .topbar {
+        display: flex;
+        height: 55px;
+        text-align: center;
+  
+        .more {
+          display: none;
+  
+          @media (max-width: $medium) {
+            display: inline;
+          }
+  
+          button {
+            margin: 14px 0 0 10px;
+          }
+        }
+        
+        .room-info {
+          width: 100%;
+          
+          .room-name {
+            margin: 10px auto 5px auto;
+            font: $font-m-bold;
+          }
+  
+          .room-users {
+            margin: 0 auto 5px auto;
+            font: $font-xs-italic;
+          }
+        }
+  
+        .themes {
+  
+          button {
+            margin: 13px 8px 0 0;
+          }
+        }
+      }
+  
+      .messages {
+        height: 83%;
+        padding: 20px;
+        overflow: auto;
+  
+        @media (max-width: $medium) {
+          padding: 5px;
+        }
+      }
+  
+      .chat-input {
+        height: 55px;
+        padding: 0 20px;
+        background: #fff;
+        box-shadow: 0 -1px 10px $shadow-light;
+  
+        form {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 10px;
+          background: #fff;
+          border-radius: 6px;
+          border: 1px solid transparent;
+  
+          input {
+            width: 90%;
+            padding: 7px 15px;
+            font-size: 16px;
+            font-family: 'Muli', sans-serif;
+            border: none;
+            border-radius: 10px;
+          }
+        }
+      }
+    }
+  }

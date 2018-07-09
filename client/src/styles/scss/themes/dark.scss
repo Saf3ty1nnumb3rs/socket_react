@@ -1,0 +1,20 @@
+@import './theme.scss';
+
+@include theme(
+    .5,         //opacity
+  #263238,    // $primary
+  rgba(#263238, .5),  // $primary-transparent
+  #475a64,    // $primary-light
+  #fff,       // $secondary
+  #c5c5c5,    // $input-outline
+  #fff,       // $icon
+  #00BCD4,    // $send-icon
+  #ffd752,    // $error
+  #c0e2e7,    // $my-message
+  #ffffff,    // $message
+  #00BCD4,    // $sender
+  #000,       // $message-text
+  gray,       // $message-time
+  #81ccd6,    // $scroll-track
+  #37c1d3     // $scroll-thumb
+)

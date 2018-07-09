@@ -5,11 +5,9 @@ import { socketOn, socketEmit } from "../helpers/socketEvents";
 import { sidebarOpen } from "../helpers/sidebarToggle";
 import LoginPage from "./LoginPage";
 import SidebarLeft from "./SidebarLeft";
-import SidebarRight from "./SidebarRight";
 import Message from "./Message";
 import MyMessage from "./MyMessage";
 
-import "../styles/App.css";
 
 class App extends Component {
   constructor() {
@@ -22,6 +20,9 @@ class App extends Component {
       rooms: []
     };
 
+    this.sendMessage = this.sendMessage.bind(this);
+    this.switchRoom = this.switchRoom.bind(this);
+
     socketOn.updateUser(user => {
       this.setState({ user });
     });
@@ -31,34 +32,18 @@ class App extends Component {
     });
 
     socketOn.updateRoom(room => {
-      this.setState({ room });
+      this.setState({ room: room.name });
     });
 
     socketOn.updateRooms(rooms => {
       this.setState({ rooms });
     });
-
-    this.sendMessage = event => {
-      event.preventDefault();
-
-      const text = event.target.elements.text.value.trim();
-
-      if (text) {
-        socketEmit.clientMessage(text, this.state.room);
-
-        event.target.elements.text.value = "";
-      }
-    };
-
-    this.switchRoom = room => {
-      this.setState({ room });
-    };
-
-    this.openSidebar = side => {
-      sidebarOpen(side);
-    };
   }
+    
 
+  componentDidMount() {
+    console.log('App did mount')
+  }
   componentDidUpdate() {
     const messages = document.getElementsByClassName("messages")[0];
 
@@ -66,6 +51,26 @@ class App extends Component {
       messages.scrollTop = messages.scrollHeight;
     }
   }
+  
+  static openSidebar = () => {
+    sidebarOpen();
+  };
+
+  sendMessage = event => {
+    event.preventDefault();
+
+    const text = event.target.elements.text.value.trim();
+
+    if (text) {
+      socketEmit.clientMessage(text, this.state.room);
+
+      event.target.elements.text.value = "";
+    }
+  };
+
+  switchRoom = room => {
+    this.setState({ room });
+  };
 
   render() {
     const currentRoom = this.state.rooms.find(
@@ -73,11 +78,11 @@ class App extends Component {
     );
 
     if (!this.state.user) {
-      return <LoginPage />;
+      return <LoginPage user={this.state.user} />;
     }
 
     return (
-      <div className="chat-app">
+      <App className="chat-app">
         <SidebarLeft
           user={this.state.user}
           users={this.state.users}
@@ -88,7 +93,7 @@ class App extends Component {
           <div className="topbar">
             <div className="more">
               <button
-                onClick={() => this.openSidebar("left")}
+                onClick={() => this.openSidebar()} title="Show public chats & online users">}
                 title="Show public chats & online users"
               >
                 <More className="icon" size="22px" />
@@ -106,6 +111,15 @@ class App extends Component {
             <div className="themes">
             </div>
           </div>
+          <div className="messages">
+            {this.state.room && currentRoom.messages.map((message, i) => {
+              if (message.sender.name === this.state.user.name) {
+                return <MyMessage key={i} message={message} />;
+              }
+
+              return <Message message={message} />;
+            })}
+          </div>
           <div className="chat-input">
             <form onSubmit={event => this.sendMessage(event)}>
               <input
@@ -121,11 +135,12 @@ class App extends Component {
               </button>
             </form>
           </div>
-          <SidebarRight />
         </div>
-      </div>
+      </App>
     );
   }
 }
 
 export default App;
+
+

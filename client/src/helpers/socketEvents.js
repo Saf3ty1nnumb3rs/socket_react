@@ -1,24 +1,28 @@
 import socketIOClient from "socket.io-client";
 
-const socket = socketIOClient("/");
+const socket = socketIOClient("http://localhost:3001");
 
 const socketOn = {
   updateUser: callback => {
+    console.log('Update user')
     socket.on("updateUser", user => {
       callback(user);
     });
   },
   updateUsers: callback => {
+    console.log('Update users')
     socket.on("updateUsers", users => {
       callback(users);
     });
   },
   updateRoom: callback => {
+    console.log('Update room')
     socket.on("updateRoom", room => {
       callback(room);
     });
   },
   updateRooms: callback => {
+    console.log('Update rooms')
     socket.on("updateRooms", rooms => {
       callback(rooms);
     });
@@ -27,9 +31,11 @@ const socketOn = {
 
 const socketEmit = {
   joinUser: (userName, callback) => {
+    console.log('User joining')
     socket.emit("joinUser", userName, err => callback(err));
   },
   joinRoom: (roomName, password, callback) => {
+    console.log('Room join')
     socket.emit("joinRoom", { roomName, password }, err => callback(err));
   },
   leaveRoom: roomName => {

@@ -1,59 +1,60 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Close from 'react-icons/lib/md/close';
-import Add from 'react-icons/lib/md/add-box';
-import Join from 'react-icons/lib/fa/sign-in';
-import Leave from 'react-icons/lib/fa/sign-out';
-import Lock from 'react-icons/lib/md/lock';
-import UserPicModal from './UserPicModal';
-import CreateRoomModal from './CreateRoomModal';
-import PasswordModal from './PasswordModal';
-import { socketEmit } from '../helpers/socketEvents';
-import { sidebarClose } from '../helpers/sidebarToggle';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import Close from "react-icons/lib/md/close";
+import Add from "react-icons/lib/md/add-box";
+import Join from "react-icons/lib/fa/sign-in";
+import Leave from "react-icons/lib/fa/sign-out";
+import Lock from "react-icons/lib/md/lock";
+import UserPicModal from "./UserPicModal";
+import CreateRoomModal from "./CreateRoomModal";
+import PasswordModal from "./PasswordModal";
+import { socketEmit } from "../helpers/socketEvents";
+import { sidebarClose } from "../helpers/sidebarToggle";
 
 class SidebarLeft extends Component {
+  state = {
+    picModalOpen: false,
+    createRoomModalOpen: false,
+    passwordModal: {
+      open: false,
+      roomName: null
+    }
+  };
 
-    state = {
-        picModalOpen: false,
-        createRoomModalOpen: false,
-        passwordModal: {
-          open: false,
-          roomName: null,
-        }
+  togglePicModal = () => {
+    this.setState(prevState => ({ picModalOpen: !prevState.picModalOpen }));
+  };
+
+  toggleCreateRoomModal = () => {
+    this.setState(prevState => ({
+      createRoomModalOpen: !prevState.createRoomModalOpen
+    }));
+  };
+
+  togglePasswordModal = roomName => {
+    this.setState(prevState => ({
+      passwordModal: {
+        open: !prevState.passwordModal.open,
+        roomName
       }
+    }));
+  };
 
-      togglePicModal = () => {
-        this.setState(prevState => ({ picModalOpen: !prevState.picModalOpen }));
-      };
+  joinRoom = data => {
+    socketEmit.joinRoom(data.roomName, data.password || null);
+  };
 
-      toggleCreateRoomModal = () => {
-        this.setState(prevState => ({ createRoomModalOpen: !prevState.createRoomModalOpen }));
-      };
+  leaveRoom = roomName => {
+    socketEmit.leaveRoom(roomName);
+  };
 
-      togglePasswordModal = (roomName) => {
-        this.setState(prevState => ({
-          passwordModal: {
-            open: !prevState.passwordModal.open,
-            roomName,
-          },
-        }));
-      };
+  closeSidebar = () => {
+    sidebarClose();
+  };
 
-      joinRoom = (data) => {
-        socketEmit.joinRoom(data.roomName, data.password || null);
-      };
-
-      leaveRoom = (roomName) => {
-        socketEmit.leaveRoom(roomName);
-      };
-
-      closeSidebar = () => {
-        sidebarClose();
-      };
-
-    render() {
-        return (
-            <div className="sidebar-left sidebar-left-closed">
+  render() {
+    return (
+      <div className="sidebar-left sidebar-left-closed">
         <div className="profile">
           <div className="left">
             <div>
@@ -61,7 +62,13 @@ class SidebarLeft extends Component {
             </div>
             <div>
               <p>{this.props.user && this.props.user.name}</p>
-              <button className="edit button-text" title="Edit profile" onClick={this.togglePicModal}>Edit</button>
+              <button
+                className="edit button-text"
+                title="Edit profile"
+                onClick={this.togglePicModal}
+              >
+                Edit
+              </button>
             </div>
           </div>
           <div className="close">
@@ -73,36 +80,74 @@ class SidebarLeft extends Component {
         <div className="public-chats">
           <div className="panel">
             <p>Public Chats</p>
-            <button onClick={this.toggleCreateRoomModal} title="Create new room">
+            <button
+              onClick={this.toggleCreateRoomModal}
+              title="Create new room"
+            >
               <Add className="icon" size="20px" />
             </button>
           </div>
           <div className="public-chats-list">
             {this.props.rooms.map(room => (
-              <div className="list">
-                <img src={room.name === 'Home Chat' ? '/img/home_chat.png' : '/img/public_chat.png'} alt="chat-room" />
+              <div key={room.name} className="list">
+                <img
+                  src={
+                    room.name === "Local Chat"
+                      ? "/img/home_chat.png"
+                      : "/img/public_chat.png"
+                  }
+                  alt="chat-room"
+                />
                 <div>
-                  <p className="primary" onClick={() => this.props.user.rooms.includes(room.name) && this.props.switchRoom(room.name)} title="Switch to this room">{room.name}</p>
-                  <p className="secondary">{room.users.join(', ').length > 25 ? `${room.users.join(', ').slice(0, 25)}...` : room.users.join(', ')}</p>
+                  <p
+                    className="primary"
+                    onClick={() =>
+                      this.props.user.rooms.includes(room.name) &&
+                      this.props.switchRoom(room.name)
+                    }
+                    title="Switch to this room"
+                  >
+                    {room.name}
+                  </p>
+                  <p className="secondary">
+                    {room.users.join(", ").length > 25
+                      ? `${room.users.join(", ").slice(0, 25)}...`
+                      : room.users.join(", ")}
+                  </p>
                 </div>
-                {room.name !== 'Home Chat' && !room.password && (!this.props.user.rooms.includes(room.name) ?
-                  <button onClick={() => this.joinRoom({ roomName: room.name })} title="Join this room">
-                    <Join className="icon" size="20px" />
-                  </button>
-                  :
-                  <button onClick={() => this.leaveRoom(room.name)} title="Leave this room">
-                    <Leave className="icon" size="20px" />
-                  </button>)
-                }
-                {room.password && (!this.props.user.rooms.includes(room.name) ?
-                  <button onClick={() => this.togglePasswordModal(room.name)} title="Enter password to join this room">
-                    <Lock className="icon" size="20px" />
-                  </button>
-                  :
-                  <button onClick={() => this.leaveRoom(room.name)} title="Leave this room">
-                    <Leave className="icon" size="20px" />
-                  </button>)
-                }
+                {room.name !== "Local Chat" &&
+                  !room.password &&
+                  (!this.props.user.rooms.includes(room.name) ? (
+                    <button
+                      onClick={() => this.joinRoom({ roomName: room.name })}
+                      title="Join this room"
+                    >
+                      <Join className="icon" size="20px" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => this.leaveRoom(room.name)}
+                      title="Leave this room"
+                    >
+                      <Leave className="icon" size="20px" />
+                    </button>
+                  ))}
+                {room.password &&
+                  (!this.props.user.rooms.includes(room.name) ? (
+                    <button
+                      onClick={() => this.togglePasswordModal(room.name)}
+                      title="Enter password to join this room"
+                    >
+                      <Lock className="icon" size="20px" />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => this.leaveRoom(room.name)}
+                      title="Leave this room"
+                    >
+                      <Leave className="icon" size="20px" />
+                    </button>
+                  ))}
               </div>
             ))}
           </div>
@@ -113,11 +158,15 @@ class SidebarLeft extends Component {
           </div>
           <div className="users-list">
             {this.props.users.map(user => (
-              <div className="list">
+              <div key={user.id} className="list">
                 <img src={user.userPic} alt="user-userPic" />
                 <div>
                   <p className="primary">{user.name}</p>
-                  <p className="secondary">{user.rooms.join(', ').length > 25 ? `${user.rooms.join(', ').slice(0, 25)}...` : user.rooms.join(', ')}</p>
+                  <p className="secondary">
+                    {user.rooms.join(", ").length > 25
+                      ? `${user.rooms.join(", ").slice(0, 25)}...`
+                      : user.rooms.join(", ")}
+                  </p>
                 </div>
               </div>
             ))}
@@ -134,24 +183,27 @@ class SidebarLeft extends Component {
         />
         <PasswordModal
           isOpen={this.state.passwordModal.open}
-          onRequestClose={() => this.togglePasswordModal(this.state.passwordModal.roomName)}
+          onRequestClose={() =>
+            this.togglePasswordModal(this.state.passwordModal.roomName)
+          }
           roomName={this.state.passwordModal.roomName}
         />
       </div>
-        );
-    }
+    );
+  }
 }
 
 SidebarLeft.propTypes = {
-    user: PropTypes.shape({
-      id: PropTypes.string,
-      name: PropTypes.string,
-      userPic: PropTypes.string,
-      rooms: PropTypes.array,
-    }).isRequired,
-    users: PropTypes.arrayOf(PropTypes.object).isRequired,
-    rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
-    switchRoom: PropTypes.func.isRequired,
-  };
+  user: PropTypes.shape({
+    id: PropTypes.string,
+    name: PropTypes.string,
+    userPic: PropTypes.string,
+    rooms: PropTypes.array
+  }).isRequired,
+  users: PropTypes.arrayOf(PropTypes.object).isRequired,
+  rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  switchRoom: PropTypes.func.isRequired
+};
 
 export default SidebarLeft;
+
