@@ -34,9 +34,9 @@ const socketEmit = {
     console.log('User joining')
     socket.emit("joinUser", userName, err => callback(err));
   },
-  joinRoom: (roomName, password, callback) => {
-    console.log('Room join')
-    socket.emit("joinRoom", { roomName, password }, err => callback(err));
+  joinRoom: (roomName, password) => {
+    console.log('socketEvent joinRoom Fired')
+    socket.emit("joinRoom", { roomName, password });
   },
   leaveRoom: roomName => {
     socket.emit("leaveRoom", roomName);

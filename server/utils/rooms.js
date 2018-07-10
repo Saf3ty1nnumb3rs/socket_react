@@ -16,12 +16,13 @@ class Rooms {
     }
 
     getRoom(roomName) {
-        console.log('Room name from getRoom', roomName)
+        console.log('Room name from getRoom fired', roomName)
         return this.rooms.find(room => room.name === roomName)
     }
 
     addRoom(roomName, password) {
         console.log('Room name from addRoom', roomName)
+        console.log('Password for room:', password)
         if(!this.rooms.find(room => room.name === roomName)) {
             this.rooms.push({
                 name: roomName,
@@ -29,6 +30,7 @@ class Rooms {
                 users: [],
                 messages: []
             });
+            
         }
     }
 

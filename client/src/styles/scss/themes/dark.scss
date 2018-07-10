@@ -1,9 +1,9 @@
 @import './theme.scss';
 
 @include theme(
-    .5,         //opacity
+    .8,         //opacity
   #263238,    // $primary
-  rgba(#263238, .5),  // $primary-transparent
+  rgba(#263238, .8),  // $primary-transparent
   #475a64,    // $primary-light
   #fff,       // $secondary
   #c5c5c5,    // $input-outline

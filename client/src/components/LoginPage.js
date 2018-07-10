@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { socketEmit } from "../helpers/socketEvents";
-import App from './App'
+
+
 class LoginPage extends Component {
   constructor() {
     super();
@@ -27,11 +28,6 @@ class LoginPage extends Component {
   };
 
   render() {
-      console.log(this.props.user)
-      if(this.props.user){
-          
-          return <App />
-      }
     return (
       <div className="login-page">
         <div className="login-modal">

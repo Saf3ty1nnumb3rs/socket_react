@@ -12,14 +12,21 @@ import { socketEmit } from "../helpers/socketEvents";
 import { sidebarClose } from "../helpers/sidebarToggle";
 
 class SidebarLeft extends Component {
-  state = {
-    picModalOpen: false,
-    createRoomModalOpen: false,
-    passwordModal: {
-      open: false,
-      roomName: null
-    }
-  };
+  constructor() {
+    super();
+
+    this.state = {
+      picModalOpen: false,
+      createRoomModalOpen: false,
+      passwordModal: {
+        open: false,
+        roomName: null
+      }
+    };
+    this.togglePicModal = this.togglePicModal.bind(this);
+    this.toggleCreateRoomModal = this.toggleCreateRoomModal.bind(this);
+    this.togglePasswordModal = this.togglePasswordModal.bind(this);
+  }
 
   togglePicModal = () => {
     this.setState(prevState => ({ picModalOpen: !prevState.picModalOpen }));
@@ -40,15 +47,16 @@ class SidebarLeft extends Component {
     }));
   };
 
-  joinRoom = data => {
+  static joinRoom = data => {
+    console.log('joinRoom Fired')
     socketEmit.joinRoom(data.roomName, data.password || null);
   };
 
-  leaveRoom = roomName => {
+  static leaveRoom = roomName => {
     socketEmit.leaveRoom(roomName);
   };
 
-  closeSidebar = () => {
+  static closeSidebar = () => {
     sidebarClose();
   };
 
@@ -72,7 +80,7 @@ class SidebarLeft extends Component {
             </div>
           </div>
           <div className="close">
-            <button onClick={this.closeSidebar}>
+            <button onClick={SidebarLeft.closeSidebar}>
               <Close className="icon" size="24px" />
             </button>
           </div>
@@ -119,14 +127,16 @@ class SidebarLeft extends Component {
                   !room.password &&
                   (!this.props.user.rooms.includes(room.name) ? (
                     <button
-                      onClick={() => this.joinRoom({ roomName: room.name })}
+                      onClick={() =>
+                        SidebarLeft.joinRoom({ roomName: room.name })
+                      }
                       title="Join this room"
                     >
                       <Join className="icon" size="20px" />
                     </button>
                   ) : (
                     <button
-                      onClick={() => this.leaveRoom(room.name)}
+                      onClick={() => SidebarLeft.leaveRoom(room.name)}
                       title="Leave this room"
                     >
                       <Leave className="icon" size="20px" />
@@ -142,7 +152,7 @@ class SidebarLeft extends Component {
                     </button>
                   ) : (
                     <button
-                      onClick={() => this.leaveRoom(room.name)}
+                      onClick={() => SidebarLeft.leaveRoom(room.name)}
                       title="Leave this room"
                     >
                       <Leave className="icon" size="20px" />
@@ -206,4 +216,3 @@ SidebarLeft.propTypes = {
 };
 
 export default SidebarLeft;
-

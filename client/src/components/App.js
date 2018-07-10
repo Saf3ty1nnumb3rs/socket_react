@@ -82,7 +82,7 @@ class App extends Component {
     }
 
     return (
-      <App className="chat-app">
+      <div className="chat-app">
         <SidebarLeft
           user={this.state.user}
           users={this.state.users}
@@ -93,7 +93,7 @@ class App extends Component {
           <div className="topbar">
             <div className="more">
               <button
-                onClick={() => this.openSidebar()} title="Show public chats & online users">}
+                onClick={() => App.openSidebar()} 
                 title="Show public chats & online users"
               >
                 <More className="icon" size="22px" />
@@ -117,7 +117,7 @@ class App extends Component {
                 return <MyMessage key={i} message={message} />;
               }
 
-              return <Message message={message} />;
+              return <Message key={i} message={message} />;
             })}
           </div>
           <div className="chat-input">
@@ -136,7 +136,7 @@ class App extends Component {
             </form>
           </div>
         </div>
-      </App>
+      </div>
     );
   }
 }

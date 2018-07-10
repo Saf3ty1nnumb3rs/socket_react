@@ -52,7 +52,7 @@ app.post('/api/userPic', upload.single('userPic'), (req, res) => {
 });
 
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("Socket Connected");
 
   socket.on('joinUser', (userName, callback) => {
@@ -71,13 +71,18 @@ io.on("connection", socket => {
       socket.emit('updateUser', users.getUser(socket.id));
       io.emit('updateRooms', rooms.getRooms());
       socket.emit('updateRoom', rooms.getRoom(socket.room));
-    
-  })
-  socket.on('joinRoom', ({ roomName, password = null }, callback) => {
-    const room = rooms.getRoom(roomName);
+  });
 
+  socket.on('joinRoom', ( {roomName, password = null} ) => {
+    console.log('joinRoom server' )
+    console.log('Password entered for join room:', password)
+    const room = rooms.getRoom(roomName);
+    if(password === ''){
+      password = null
+    }
     if(room && room.password !== password) {
-      callback('Wrong password');
+      console.log('Password not a match on joinRoom')
+      return
     }else{
       users.addRoom(socket.id, roomName);
       rooms.addRoom(roomName, password);
@@ -90,10 +95,9 @@ io.on("connection", socket => {
       socket.emit('updateUser', users.getUser(socket.id));
       io.emit('updateRooms', rooms.getRooms());
       socket.emit('updateRoom', rooms.getRoom(socket.room));
-
-      callback(null)
+      
     } 
-  })
+  });
   
   socket.on('leaveRoom', (roomName) => {
     rooms.removeUserFromRoom(users.getUser(socket.id).name, roomName);
@@ -116,6 +120,7 @@ io.on("connection", socket => {
       text: data.text,
       time: moment().format('hh:mm a'),
     };
+    console.log(message.sender)
     if (room.messages.length && message.sender === room.messages[room.messages.length - 1].sender) {
       message.consecutive = true;
     }

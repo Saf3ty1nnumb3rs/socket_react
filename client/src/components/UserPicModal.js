@@ -58,7 +58,7 @@ class UserPicModal extends Component {
         <form onSubmit={event => this.uploadPic(event)}>
           <h3>Set Profile</h3>
           <p className="error">{this.state.error}</p>
-          <img id="preview" src={this.props.user.avatar} alt="avatar" />
+          <img id="preview" src={this.props.user.userPic} alt="avatar" />
           <input
             id="inputfile"
             name="avatar"

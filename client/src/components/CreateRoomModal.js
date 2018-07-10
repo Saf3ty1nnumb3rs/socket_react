@@ -20,8 +20,8 @@ class CreateRoomModal extends Component {
 
     socketEmit.joinRoom(roomName, password);
 
-    event.target.elements.roomName.value = "";
-    event.target.elements.password.value = "";
+    event.target.elements.roomName.value = '';
+    event.target.elements.password.value = '';
 
     this.props.onRequestClose();
   };
@@ -33,7 +33,9 @@ class CreateRoomModal extends Component {
           isOpen={this.props.isOpen}
           onRequestClose={this.props.onRequestClose}
         >
-          <form onSubmit={this.createRoom}>
+          <form 
+          onSubmit={this.createRoom} autoComplete="off"
+          >
             <h3>Create New Room</h3>
             <p className="error">{this.state.error}</p>
             <p>Room Name</p>
@@ -41,11 +43,10 @@ class CreateRoomModal extends Component {
               type="text"
               name="roomName"
               maxLength="20"
-              autoFocus
-              autoComplete="off"
+              autoComplete="newroom"
             />
             <p>Password (optional)</p>
-            <input type="password" name="password" />
+            <input type="password" name="password" autoComplete="new-password" />
             <button type="submit" className="button-text">
               Create
             </button>

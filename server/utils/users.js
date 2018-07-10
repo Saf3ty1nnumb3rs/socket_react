@@ -27,9 +27,9 @@ class Users {
     });
   }
 
-  updatePic(id, pic) {
-    console.log(`Updating ${pic}`)
-    this.users.find(user => user.id === id).pic = `/img/userPics/${pic}`;
+  updatePic(id, userPic) {
+    console.log(`Updating ${userPic}`)
+    this.users.find(user => user.id === id).userPic = `/img/userPics/${userPic}`;
   }
 
   removeUser(id) {
