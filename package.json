@@ -8,7 +8,7 @@
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
     "dev": "concurrently \"node server/server.js\" \"cd client && npm start\"",
-    "postinstall": "cd client && npm i && npm run build"
+    "postinstall": "cd client && yarn install && yarn build"
   },
   "engines": {
     "node": "10.2.1"
