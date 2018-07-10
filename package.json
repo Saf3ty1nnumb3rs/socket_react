@@ -8,7 +8,7 @@
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
     "dev": "concurrently \"node server/server.js\" \"cd client && npm start\"",
-    "postinstall": "cd client && yarn install && yarn build"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "engines": {
     "node": "10.2.1"
