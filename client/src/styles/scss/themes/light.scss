@@ -3,7 +3,7 @@
 @include theme(
     .5,
   #dedef7,    // $primary
-  #eaeafde7,  // $primary-transparent
+  rgba(#eaeafd, .8),  // $primary-transparent
   #dedef7,    // $primary-light
   #4c4c5c,    // $secondary
   #c5c5c5,    // $input-outline

@@ -1,0 +1,77 @@
+::-webkit-scrollbar-track {
+  background: #b0abcf; }
+
+::-webkit-scrollbar-thumb {
+  background: #7068b4; }
+
+.button-text {
+  color: #fff;
+  border-color: #fff; }
+
+.chat-app .sidebar-left {
+  background: rgba(108, 101, 172, 0.8);
+  color: #fff; }
+  .chat-app .sidebar-left .profile .close .icon {
+    color: #fff; }
+  .chat-app .sidebar-left .public-chats .panel {
+    background: #746db4;
+    color: #fff; }
+    .chat-app .sidebar-left .public-chats .panel .icon {
+      color: #fff; }
+  .chat-app .sidebar-left .public-chats .public-chats-list .list {
+    border-color: #9087e0; }
+    .chat-app .sidebar-left .public-chats .public-chats-list .list .icon {
+      color: #fff; }
+  .chat-app .sidebar-left .users .panel {
+    background: #746db4;
+    color: #fff; }
+  .chat-app .sidebar-left .users .users-list .list {
+    border-color: #9087e0; }
+
+.chat-app .chat-content .topbar {
+  background: #746db4;
+  color: #fff; }
+  .chat-app .chat-content .topbar .more button .icon {
+    color: #fff; }
+  .chat-app .chat-content .topbar .themes button .icon {
+    color: #fff; }
+
+.chat-app .chat-content .messages .my-message .message-content, .chat-app .chat-content .messages .my-message .message-content-consecutive {
+  background: #c0e2e7; }
+  .chat-app .chat-content .messages .my-message .message-content .sender, .chat-app .chat-content .messages .my-message .message-content-consecutive .sender {
+    color: #746db4; }
+  .chat-app .chat-content .messages .my-message .message-content .time, .chat-app .chat-content .messages .my-message .message-content-consecutive .time {
+    color: gray; }
+
+.chat-app .chat-content .messages .message .message-content, .chat-app .chat-content .messages .message .message-content-consecutive {
+  background: #ffffff; }
+  .chat-app .chat-content .messages .message .message-content .sender, .chat-app .chat-content .messages .message .message-content-consecutive .sender {
+    color: #746db4; }
+  .chat-app .chat-content .messages .message .message-content .time, .chat-app .chat-content .messages .message .message-content-consecutive .time {
+    color: gray; }
+
+.chat-app .chat-content .chat-input form {
+  border-color: #c5c5c5; }
+  .chat-app .chat-content .chat-input form button .send-icon {
+    color: #746db4; }
+
+.chat-app .sidebar-right {
+  background: rgba(108, 101, 172, 0.8);
+  color: #fff; }
+  .chat-app .sidebar-right .close button .icon {
+    color: #fff; }
+  .chat-app .sidebar-right .themes .panel {
+    background: #746db4;
+    color: #fff; }
+  .chat-app .sidebar-right .backgrounds .panel {
+    background: #746db4;
+    color: #fff; }
+
+.avatar-modal, .create-room-modal, .password-modal, .login-modal {
+  background: #746db4;
+  color: #fff; }
+  .avatar-modal form .error, .create-room-modal form .error, .password-modal form .error, .login-modal form .error {
+    color: #ffd752; }
+  .avatar-modal form input, .create-room-modal form input, .password-modal form input, .login-modal form input {
+    color: #fff;
+    border-color: #fff; }
