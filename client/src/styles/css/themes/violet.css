@@ -1,34 +1,34 @@
 ::-webkit-scrollbar-track {
-  background: #81ccd6; }
+  background: #b0abcf; }
 
 ::-webkit-scrollbar-thumb {
-  background: #37c1d3; }
+  background: #7068b4; }
 
 .button-text {
   color: #fff;
   border-color: #fff; }
 
 .chat-app .sidebar-left {
-  background: rgba(38, 50, 56, 0.8);
+  background: rgba(108, 101, 172, 0.8);
   color: #fff; }
   .chat-app .sidebar-left .profile .close .icon {
     color: #fff; }
   .chat-app .sidebar-left .public-chats .panel {
-    background: #263238;
+    background: #746db4;
     color: #fff; }
     .chat-app .sidebar-left .public-chats .panel .icon {
       color: #fff; }
   .chat-app .sidebar-left .public-chats .public-chats-list .list {
-    border-color: #475a64; }
+    border-color: #9087e0; }
     .chat-app .sidebar-left .public-chats .public-chats-list .list .icon {
       color: #fff; }
   .chat-app .sidebar-left .users .panel {
-    background: #263238;
+    background: #746db4;
     color: #fff; }
   .chat-app .sidebar-left .users .users-list .list {
-    border-color: #475a64; }
+    border-color: #9087e0; }
 .chat-app .chat-content .topbar {
-  background: #263238;
+  background: #746db4;
   color: #fff; }
   .chat-app .chat-content .topbar .more button .icon {
     color: #fff; }
@@ -37,33 +37,33 @@
 .chat-app .chat-content .messages .my-message .message-content, .chat-app .chat-content .messages .my-message .message-content-consecutive {
   background: #c0e2e7; }
   .chat-app .chat-content .messages .my-message .message-content .sender, .chat-app .chat-content .messages .my-message .message-content-consecutive .sender {
-    color: #00BCD4; }
+    color: #746db4; }
   .chat-app .chat-content .messages .my-message .message-content .time, .chat-app .chat-content .messages .my-message .message-content-consecutive .time {
     color: gray; }
 .chat-app .chat-content .messages .message .message-content, .chat-app .chat-content .messages .message .message-content-consecutive {
   background: #ffffff; }
   .chat-app .chat-content .messages .message .message-content .sender, .chat-app .chat-content .messages .message .message-content-consecutive .sender {
-    color: #00BCD4; }
+    color: #746db4; }
   .chat-app .chat-content .messages .message .message-content .time, .chat-app .chat-content .messages .message .message-content-consecutive .time {
     color: gray; }
 .chat-app .chat-content .chat-input form {
   border-color: #c5c5c5; }
   .chat-app .chat-content .chat-input form button .send-icon {
-    color: #00BCD4; }
+    color: #746db4; }
 .chat-app .sidebar-right {
-  background: rgba(38, 50, 56, 0.8);
+  background: rgba(108, 101, 172, 0.8);
   color: #fff; }
   .chat-app .sidebar-right .close button .icon {
     color: #fff; }
   .chat-app .sidebar-right .themes .panel {
-    background: #263238;
+    background: #746db4;
     color: #fff; }
   .chat-app .sidebar-right .backgrounds .panel {
-    background: #263238;
+    background: #746db4;
     color: #fff; }
 
 .avatar-modal, .create-room-modal, .password-modal, .login-modal {
-  background: #263238;
+  background: #746db4;
   color: #fff; }
   .avatar-modal form .error, .create-room-modal form .error, .password-modal form .error, .login-modal form .error {
     color: #ffd752; }
@@ -71,4 +71,4 @@
     color: #fff;
     border-color: #fff; }
 
-/*# sourceMappingURL=dark.css.map */
+/*# sourceMappingURL=violet.css.map */
