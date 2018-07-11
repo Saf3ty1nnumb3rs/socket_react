@@ -8,8 +8,8 @@ const { Users } = require("./utils/users")
 const { Rooms } = require("./utils/rooms")
 
 const app = express();
-const http = require("http").Server(app);
-const io = require('socket.io')(http);
+const http = require("http").createServer(app);
+const io = require('socket.io')(http, {log:false, origins:'*:*'});
 const publicPath = path.join(`${__dirname}`,'../client/build');
 const PORT = process.env.PORT || 3001;
 
@@ -21,6 +21,13 @@ console.log('Path', publicPath)
 console.log('Path2', publicPath + '/index.html')
 app.use(logger("dev"));
 app.use(bodyParser.json())
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+  next();
+});
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -172,4 +179,4 @@ http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
 
-module.exports = app
+module.exports = http
