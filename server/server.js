@@ -10,13 +10,14 @@ const { Rooms } = require("./utils/rooms")
 const app = express();
 const http = require("http").Server(app);
 const io = require('socket.io')(http);
-const publicPath = path.join(__dirname, 'client', 'build');
+const publicPath = path.join(__dirname,'../client/build');
 const PORT = process.env.PORT || 3001;
 
 const users = new Users();
 const rooms = new Rooms();
 
 app.use(express.static(publicPath));
+console.log('Path', publicPath)
 app.use(logger("dev"));
 app.use(bodyParser.json())
 
