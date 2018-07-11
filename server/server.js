@@ -18,6 +18,7 @@ const rooms = new Rooms();
 
 app.use(express.static(publicPath));
 console.log('Path', publicPath)
+console.log('Path2', publicPath + '/index.html')
 app.use(logger("dev"));
 app.use(bodyParser.json())
 
@@ -171,3 +172,4 @@ http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
 
+module.exports = app
