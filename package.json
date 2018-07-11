@@ -1,9 +1,13 @@
 {
-  "name": "client",
-  "version": "0.1.0",
-  "main": "index.js",
+  "name": "node-react",
+  "version": "1.0.0",
+  "description": "React, Node, and Socket.io",
+  "main": "src/server/server.js",
   "private": true,
   "proxy": "http://localhost:3001",
+  "engines": {
+    "node": "10.2.1"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "node-sass-chokidar": "^1.3.0",
@@ -40,6 +44,6 @@
     "eject": "react-scripts eject",
     "server" : "node src/server/server.js",
     "dev" : "concurrently \"node src/server/server.js\" \"npm start\"",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   }
 }
