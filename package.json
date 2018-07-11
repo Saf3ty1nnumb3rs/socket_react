@@ -4,7 +4,6 @@
   "description": "React, Node, and Socket.io",
   "main": "src/server/server.js",
   "private": true,
-  "proxy": "http://localhost:3001",
   "engines": {
     "node": "10.2.1"
   },
