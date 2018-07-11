@@ -171,10 +171,13 @@ io.on("connection", (socket) => {
   //   );
   // }
 });
-app.use(express.static(publicPath));
-app.get('*', (req, res) => {
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(publicPath));
+  app.get(/^\/(?!api).*/, (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
+console.log('SERVING REACT APP')
+}
 http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
