@@ -165,8 +165,8 @@ io.on("connection", (socket) => {
   // }
 });
 app.use(express.static(publicPath));
-app.get('/*', (req, res) => {
-  res.sendFile(publicPath + '/index.html');
+app.get('*', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
 });
 http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
