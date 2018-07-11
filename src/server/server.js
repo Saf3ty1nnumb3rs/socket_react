@@ -10,7 +10,7 @@ const { Rooms } = require("./utils/rooms")
 const app = express();
 const http = require("http").createServer(app);
 const io = require('socket.io')(http, {log:false, origins:'*:*'});
-const publicPath = path.join(`${__dirname}`,'../build');
+const publicPath = path.join(`${__dirname}`,'../../build');
 const PORT = process.env.PORT || 3001;
 
 const users = new Users();
