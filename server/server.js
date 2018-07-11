@@ -179,4 +179,4 @@ http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
 
-module.exports = http
+module.exports = { http, app }
