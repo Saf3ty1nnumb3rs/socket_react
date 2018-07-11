@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 3001;
 const users = new Users();
 const rooms = new Rooms();
 
-app.use(express.static(publicPath));
+
 console.log('Path', publicPath)
 console.log('Path2', publicPath + '/index.html')
 app.use(logger("dev"));
@@ -164,7 +164,7 @@ io.on("connection", (socket) => {
   //   );
   // }
 });
-
+app.use(express.static(publicPath));
 app.get('/*', (req, res) => {
   res.sendFile(publicPath + '/index.html');
 });
