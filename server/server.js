@@ -165,7 +165,7 @@ io.on("connection", (socket) => {
 });
 
 app.get('/*', (req, res) => {
-  res.sendFile(publicPath);
+  res.sendFile(publicPath + '/index.html');
 });
 http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
