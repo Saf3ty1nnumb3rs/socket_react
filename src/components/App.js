@@ -7,18 +7,23 @@ import LoginPage from "./LoginPage";
 import SidebarLeft from "./SidebarLeft";
 import Message from "./Message";
 import MyMessage from "./MyMessage";
+import io from 'socket.io-client';
 
+
+const socketUrl = "http://localhost:3001"
 
 class App extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       user: null,
       users: [],
       room: null,
-      rooms: []
+      rooms: [],
+      socket: null
     };
+
 
     this.sendMessage = this.sendMessage.bind(this);
     this.switchRoom = this.switchRoom.bind(this);
@@ -42,8 +47,19 @@ class App extends Component {
     
 
   componentDidMount() {
+    this.initSocket()
     console.log('App did mount')
   }
+
+  initSocket = () => {
+    const socket = io(socketUrl)
+    socket.on('connect',()=> {
+      console.log('Connected')
+    })
+    console.log(socket)
+    this.setState( {socket} )
+  }
+
   componentDidUpdate() {
     const messages = document.getElementsByClassName("messages")[0];
 
