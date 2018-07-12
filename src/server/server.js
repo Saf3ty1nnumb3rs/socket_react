@@ -4,8 +4,8 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const moment = require("moment");
-const { Users } = require("./utils/Users.js");
-const { Rooms } = require("./utils/Rooms.js");
+const { Users } = require("./utils/users");
+const { Rooms } = require("./utils/rooms");
 //const { storage, fileFilter, upload } = require("./utils/storageHelpers").upload;
 
 const app = express();
