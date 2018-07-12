@@ -10,7 +10,10 @@ const { Rooms } = require("./utils/rooms");
 
 const app = express();
 const http = require("http").Server(app);
-const io = require("socket.io")(http);
+const io = require("socket.io")(http, {
+  pingInterval: 5000,
+  pingTimeout: 10000
+});
 const publicPath = path.join(`${__dirname}`, "../../build");
 const PORT = process.env.PORT || 3001;
 
