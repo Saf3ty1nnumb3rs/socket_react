@@ -11,7 +11,7 @@ const { Rooms } = require("./utils/Rooms");
 const app = express();
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
-const publicPath = path.join(`${__dirname}`, "../../public");
+const publicPath = path.join(`${__dirname}`, "../../build");
 const PORT = process.env.PORT || 3001;
 
 const users = new Users();
@@ -183,8 +183,8 @@ io.on("connection", socket => {
 
 
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, "index.html"));
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/build/index.html`));
 
   console.log("SERVING REACT APP");
 });
