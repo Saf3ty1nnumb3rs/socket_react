@@ -4,8 +4,8 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 const multer = require("multer");
 const moment = require("moment");
-const { Users } = require("./utils/Users");
-const { Rooms } = require("./utils/Rooms");
+const { Users } = require("./utils/Users.js");
+const { Rooms } = require("./utils/Rooms.js");
 //const { storage, fileFilter, upload } = require("./utils/storageHelpers").upload;
 
 const app = express();
@@ -18,6 +18,7 @@ const users = new Users();
 const rooms = new Rooms();
 
 // const SocketManager = require('./utils/SocketManager.js')
+
 
 app.use(express.static(publicPath));
 console.log("Path", publicPath);
