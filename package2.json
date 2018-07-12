@@ -4,11 +4,12 @@
   "description": "React, Node, and Socket.io",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "cd client node server/server.js",
     "test": "mocha server/**/*.test.js",
     "test-watch": "nodemon --exec 'npm test'",
     "dev": "concurrently \"node server/server.js\" \"cd client && npm start\"",
-    "postinstall": "cd client && npm i && npm run build"
+    "postinstall": "cd client && npm i && npm run build",
+    "heroku-postbuild": "npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "engines": {
     "node": "10.2.1"

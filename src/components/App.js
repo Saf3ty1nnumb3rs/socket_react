@@ -10,7 +10,7 @@ import MyMessage from "./MyMessage";
 import io from 'socket.io-client';
 
 
-const socketUrl = "http://localhost:3001"
+// const socketUrl = "http://localhost:3001"
 
 class App extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class App extends Component {
       users: [],
       room: null,
       rooms: [],
-      socket: null
+      // socket: null
     };
 
 
@@ -47,18 +47,18 @@ class App extends Component {
     
 
   componentDidMount() {
-    this.initSocket()
+    // this.initSocket()
     console.log('App did mount')
   }
 
-  initSocket = () => {
-    const socket = io(socketUrl)
-    socket.on('connect',()=> {
-      console.log('Connected')
-    })
-    console.log(socket)
-    this.setState( {socket} )
-  }
+  // initSocket = () => {
+  //   const socket = io(socketUrl)
+  //   socket.on('connect',()=> {
+  //     console.log('Connected')
+  //   })
+  //   console.log(socket)
+  //   this.setState( {socket} )
+  // }
 
   componentDidUpdate() {
     const messages = document.getElementsByClassName("messages")[0];
