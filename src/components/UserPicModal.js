@@ -32,7 +32,7 @@ class UserPicModal extends Component {
     data.append("userPic", inputfile.files[0]);
 
     axios
-      .post("api/userPic", data, {
+      .post("/api/userPic", data, {
         headers: {
           "Content-Type": "multipart/form-data"
         }

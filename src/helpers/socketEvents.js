@@ -1,7 +1,7 @@
 import socketIOClient from "socket.io-client";
 
-const socket = socketIOClient("/");
-
+const socket = socketIOClient("http://localhost:3001");
+// const socket = socketIOClient("/");
 const socketOn = {
   updateUser: callback => {
     console.log('Update user')

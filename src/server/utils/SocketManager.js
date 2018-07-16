@@ -1,8 +1,7 @@
 const moment = require('moment');
 const io = require('../server.js').io;
-const { Rooms } = require("./Rooms")
-const { Users } = require("./Users")
-
+const { Rooms } = require("./rooms")
+const { Users } = require("./users")
 const rooms = new Rooms();
 const users = new Users();
 

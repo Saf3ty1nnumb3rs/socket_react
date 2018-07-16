@@ -1,5 +1,8 @@
 const path = require("path"); //built in to npm
 const express = require("express");
+const router = express.Router({
+  mergeParams: true
+});
 const logger = require("morgan");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -10,7 +13,7 @@ const { Rooms } = require("./utils/rooms");
 
 const app = express();
 const http = require("http").Server(app);
-const io = require("socket.io")(http, {
+const io  = module.exports.io = require("socket.io")(http, {
   pingInterval: 5000,
   pingTimeout: 10000
 });
@@ -20,7 +23,7 @@ const PORT = process.env.PORT || 3001;
 const users = new Users();
 const rooms = new Rooms();
 
-// const SocketManager = require('./utils/SocketManager.js')
+const SocketManager = require('./utils/SocketManager.js')
 
 
 app.use(express.static(publicPath));
@@ -73,118 +76,7 @@ app.post("/api/userPic", upload.single("userPic"), (req, res) => {
   res.send(req.file);
 });
 
-io.on("connection", socket => {
-  console.log("Socket Connected");
-
-  socket.on("joinUser", (userName, callback) => {
-    const err = users.addUser(socket.id, userName);
-
-    if (err) {
-      return callback(err);
-    }
-    rooms.addUserToRoom(userName, "Local Chat");
-
-    socket.join("Local Chat");
-    socket.room = "Local Chat";
-
-    io.emit("updateUsers", users.getUsers());
-    socket.emit("updateUser", users.getUser(socket.id));
-    io.emit("updateRooms", rooms.getRooms());
-    socket.emit("updateRoom", rooms.getRoom(socket.room));
-  });
-
-  socket.on("joinRoom", ({ roomName, password = null }) => {
-    console.log("joinRoom server");
-    console.log("Password entered for join room:", password);
-    const room = rooms.getRoom(roomName);
-    if (password === "") {
-      password = null;
-    }
-    if (room && room.password !== password) {
-      console.log("Password not a match on joinRoom");
-      return;
-    } else {
-      users.addRoom(socket.id, roomName);
-      rooms.addRoom(roomName, password);
-      rooms.addUserToRoom(users.getUser(socket.id).name, roomName);
-
-      socket.join(roomName);
-      socket.room = roomName;
-
-      io.emit("updateUsers", users.getUsers());
-      socket.emit("updateUser", users.getUser(socket.id));
-      io.emit("updateRooms", rooms.getRooms());
-      socket.emit("updateRoom", rooms.getRoom(socket.room));
-    }
-  });
-
-  socket.on("leaveRoom", roomName => {
-    rooms.removeUserFromRoom(users.getUser(socket.id).name, roomName);
-    users.removeRoom(socket.id, roomName);
-
-    socket.leave(roomName);
-    const user = users.getUser(socket.id);
-    socket.room = user.rooms[user.rooms.length - 1];
-
-    socket.emit("updateRoom", rooms.getRoom(socket.room));
-    io.emit("updateUsers", users.getUsers());
-    socket.emit("updateUser", users.getUser(socket.id));
-    io.emit("updateRooms", rooms.getRooms());
-  });
-
-  socket.on("clientMessage", data => {
-    const room = rooms.getRoom(data.roomName);
-    const message = {
-      sender: users.getUser(socket.id),
-      text: data.text,
-      time: moment().format("hh:mm a")
-    };
-    console.log(message.sender);
-    if (
-      room.messages.length &&
-      message.sender === room.messages[room.messages.length - 1].sender
-    ) {
-      message.consecutive = true;
-    }
-
-    rooms.addMessage(message, data.roomName);
-
-    io.emit("updateRooms", rooms.getRooms());
-  });
-
-  socket.on("getUserPic", () => {
-    io.emit("updateUsers", users.getUsers());
-    socket.emit("updateUser", users.getUser(socket.id));
-    io.emit("updateRooms", rooms.getRooms());
-  });
-
-  socket.on("disconnect", () => {
-    const user = users.getUser(socket.id);
-
-    if (user) {
-      user.rooms.forEach(room => {
-        rooms.removeUserFromRoom(users.getUser(socket.id).name, room);
-      });
-    }
-    users.removeUser(socket.id);
-
-    socket.leave(socket.room);
-
-    io.emit("updateRooms", rooms.getRooms());
-    io.emit("updateUsers", users.getUsers());
-  });
-
-  // socket.on("createLocationMessage", coords => {
-  //   const user = users.getUser(socket.id)
-
-  //   if(user){
-  //   io.to(user.room).emit(
-  //     "newLocationMessage",
-  //     generateLocationMessage(user.name, coords.latitude, coords.longitude)
-  //   );
-  // }
-});
-
+io.on("connection", SocketManager) 
 
 
 app.get('/*', (req, res) => {
