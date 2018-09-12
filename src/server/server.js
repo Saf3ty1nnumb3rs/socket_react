@@ -13,20 +13,18 @@ const { Rooms } = require("./utils/rooms");
 
 const app = express();
 const http = require("http").Server(app);
-const io  = module.exports.io = require("socket.io")(http, {
+const io = (module.exports.io = require("socket.io")(http, {
   pingInterval: 5000,
   pingTimeout: 10000
-});
+}));
 const publicPath = path.join(`${__dirname}`, "../../build");
 const PORT = process.env.PORT || 3001;
 
 const users = new Users();
 const rooms = new Rooms();
 
-const SocketManager = require('./utils/SocketManager.js')
+const SocketManager = require("./utils/SocketManager.js");
 
-
-app.use(express.static(publicPath));
 console.log("Path", publicPath);
 console.log("Path2", publicPath + "/index.html");
 app.use(logger("dev"));
@@ -76,15 +74,16 @@ app.post("/api/userPic", upload.single("userPic"), (req, res) => {
   res.send(req.file);
 });
 
-io.on("connection", SocketManager) 
+io.on("connection", SocketManager);
+if (process.env.NODE_ENV === "production") {
 
+  app.use(express.static('build'))
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(`${__dirname}/build/index.html`));
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/build/index.html`));
-
-  console.log("SERVING REACT APP");
-});
-
+    console.log("SERVING REACT APP");
+  });
+}
 http.listen(PORT, () => {
   console.log(`Server is up on port ${PORT}`);
 });
